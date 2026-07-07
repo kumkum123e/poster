@@ -1,5 +1,5 @@
 // ==========================================================================
-// Interactive NLP Life Coach - Secure Gatekeeper Checkout Scripting
+// Interactive NLP Life Coach - Client-Side Checkout Scripting
 // ==========================================================================
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -9,8 +9,7 @@ document.addEventListener('DOMContentLoaded', () => {
         fee: '99/-',
         date: '31-5-2026',
         time: '9:00 PM',
-        day: 'SUNDAY',
-        adminPassword: 'admin'
+        day: 'SUNDAY'
     };
 
     // --- DOM Elements ---
@@ -51,22 +50,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const configDate = document.getElementById('config-date');
     const configTime = document.getElementById('config-time');
     const configDay = document.getElementById('config-day');
-    const configPassword = document.getElementById('config-password');
     const resetSettingsBtn = document.getElementById('reset-settings-btn');
-
-    // Admin Logs elements
-    const tabSettingsBtn = document.getElementById('tab-settings-btn');
-    const tabLogsBtn = document.getElementById('tab-logs-btn');
-    const adminSettingsTab = document.getElementById('admin-settings-tab');
-    const adminLogsTab = document.getElementById('admin-logs-tab');
-    
-    const adminLoginBox = document.getElementById('admin-login-box');
-    const adminAuthPwdInput = document.getElementById('admin-auth-pwd');
-    const adminLoginError = document.getElementById('admin-login-error');
-    const adminLoginBtn = document.getElementById('admin-login-btn');
-    const adminLogsContainer = document.getElementById('admin-logs-container');
-    const utrLogsTbody = document.getElementById('utr-logs-tbody');
-    const refreshLogsBtn = document.getElementById('refresh-logs-btn');
 
     // --- App State ---
     let activeTimer = null;
@@ -85,7 +69,6 @@ document.addEventListener('DOMContentLoaded', () => {
         const date = localStorage.getItem('nlp_date') || DEFAULTS.date;
         const time = localStorage.getItem('nlp_time') || DEFAULTS.time;
         const day = localStorage.getItem('nlp_day') || DEFAULTS.day;
-        const adminPwd = localStorage.getItem('nlp_admin_pwd') || DEFAULTS.adminPassword;
 
         // Update displays in the checkout form summary card
         if (displayDate) displayDate.textContent = date;
@@ -100,51 +83,26 @@ document.addEventListener('DOMContentLoaded', () => {
         if (configDate) configDate.value = date;
         if (configTime) configTime.value = time;
         if (configDay) configDay.value = day;
-        if (configPassword) configPassword.value = adminPwd;
     }
 
-    // Save configurations to LocalStorage and Server config API
-    async function saveConfig(whatsapp, fee, date, time, day, adminPassword) {
+    // Save configurations to LocalStorage
+    function saveConfig(whatsapp, fee, date, time, day) {
         localStorage.setItem('nlp_whatsapp', whatsapp.trim());
         localStorage.setItem('nlp_fee', fee.trim());
         localStorage.setItem('nlp_date', date.trim());
         localStorage.setItem('nlp_time', time.trim());
         localStorage.setItem('nlp_day', day.trim());
-        localStorage.setItem('nlp_admin_pwd', adminPassword.trim());
-
-        // Update server configuration
-        try {
-            await fetch('/api/config', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ whatsappLink: whatsapp.trim(), adminPassword: adminPassword.trim() })
-            });
-        } catch (e) {
-            console.error('Failed to sync configs with server:', e);
-        }
 
         loadConfig();
     }
 
     // Reset settings to default
-    async function resetConfig() {
+    function resetConfig() {
         localStorage.removeItem('nlp_whatsapp');
         localStorage.removeItem('nlp_fee');
         localStorage.removeItem('nlp_date');
         localStorage.removeItem('nlp_time');
         localStorage.removeItem('nlp_day');
-        localStorage.removeItem('nlp_admin_pwd');
-
-        // Update server config
-        try {
-            await fetch('/api/config', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ whatsappLink: DEFAULTS.whatsappLink, adminPassword: DEFAULTS.adminPassword })
-            });
-        } catch (e) {
-            console.error('Failed to reset server configuration:', e);
-        }
 
         loadConfig();
     }
@@ -187,50 +145,22 @@ document.addEventListener('DOMContentLoaded', () => {
         }, 1000);
     }
 
-    // Submit payment verification request to backend
-    async function submitPaymentVerification(utrCode) {
+    // Submit payment verification request (Simulated Client-Side)
+    function submitPaymentVerification(utrCode) {
         upiErrorMsg.textContent = '';
         switchStep(stepProcessing);
 
-        try {
-            const response = await fetch('/api/verify-utr', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                    name: currentUserData.name,
-                    email: currentUserData.email,
-                    phone: currentUserData.phone,
-                    utr: utrCode
-                })
-            });
+        // Simulate processing delay (1.5 seconds)
+        setTimeout(() => {
+            const whatsapp = localStorage.getItem('nlp_whatsapp') || DEFAULTS.whatsappLink;
+            whatsappJoinBtn.href = whatsapp;
 
-            const data = await response.json();
-
-            if (data.success) {
-                // Set the secure WhatsApp join URL returned by the server API
-                whatsappJoinBtn.href = data.whatsappLink;
-
-                // Success transition chime
-                triggerAudioChime();
-                
-                // Show success screen
-                setTimeout(() => {
-                    switchStep(stepSuccess);
-                }, 1000);
-            } else {
-                // If validation failed, return back to payment step and show error
-                setTimeout(() => {
-                    switchStep(stepPayment);
-                    upiErrorMsg.textContent = data.error || 'Verification failed. Please check the UTR code.';
-                }, 1000);
-            }
-
-        } catch (err) {
-            setTimeout(() => {
-                switchStep(stepPayment);
-                upiErrorMsg.textContent = 'Server connection error. Please try again.';
-            }, 1000);
-        }
+            // Success transition chime
+            triggerAudioChime();
+            
+            // Show success screen
+            switchStep(stepSuccess);
+        }, 1500);
     }
 
     function triggerAudioChime() {
@@ -270,10 +200,6 @@ document.addEventListener('DOMContentLoaded', () => {
     if (detailsForm) {
         detailsForm.addEventListener('submit', (e) => {
             e.preventDefault();
-            currentUserData.name = document.getElementById('user-name').value;
-            currentUserData.email = document.getElementById('user-email').value;
-            currentUserData.phone = document.getElementById('user-phone').value;
-
             switchStep(stepPayment);
             startUPITimer(300); // 5 minute countdown
         });
@@ -288,7 +214,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // Step 2 Simulated Card Payment submit (auto-generate simulated UTR to insert into SQLite)
+    // Step 2 Simulated Card Payment submit (auto-generate simulated UTR)
     if (cardForm) {
         cardForm.addEventListener('submit', (e) => {
             e.preventDefault();
@@ -342,101 +268,11 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // --- Admin Settings Modal Logic & Tab Switching ---
-
-    // Toggle Modal Tabs
-    if (tabSettingsBtn) {
-        tabSettingsBtn.addEventListener('click', () => {
-            tabSettingsBtn.classList.add('active');
-            tabLogsBtn.classList.remove('active');
-            adminSettingsTab.classList.add('active');
-            adminLogsTab.classList.remove('active');
-        });
-    }
-
-    if (tabLogsBtn) {
-        tabLogsBtn.addEventListener('click', () => {
-            tabLogsBtn.classList.add('active');
-            tabSettingsBtn.classList.remove('active');
-            adminLogsTab.classList.add('active');
-            adminSettingsTab.classList.remove('active');
-        });
-    }
-
-    // Load UTR Audit Database Logs
-    async function fetchTransactionLogs(pwd) {
-        adminLoginError.textContent = '';
-        try {
-            const response = await fetch('/api/transactions', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ password: pwd })
-            });
-
-            const data = await response.json();
-
-            if (data.success) {
-                // Hide login box, show audit table
-                adminLoginBox.style.display = 'none';
-                adminLogsContainer.style.display = 'block';
-
-                // Render table rows
-                utrLogsTbody.innerHTML = '';
-                if (data.registrations.length === 0) {
-                    utrLogsTbody.innerHTML = `<tr><td colspan="4" style="text-align:center; padding:15px; color:#ef4444;">No registrations recorded yet.</td></tr>`;
-                } else {
-                    data.registrations.forEach(row => {
-                        const tr = document.createElement('tr');
-                        tr.style.borderBottom = '1px solid rgba(255,255,255,0.08)';
-                        tr.innerHTML = `
-                            <td style="padding:10px 12px; font-weight:600; color:#fff;">${escapeHTML(row.name)}</td>
-                            <td style="padding:10px 12px;">${escapeHTML(row.phone)}</td>
-                            <td style="padding:10px 12px; font-family:monospace; color:var(--text-gold);">${escapeHTML(row.utr)}</td>
-                            <td style="padding:10px 12px; font-size:0.75rem;">${new Date(row.created_at).toLocaleString()}</td>
-                        `;
-                        utrLogsTbody.appendChild(tr);
-                    });
-                }
-            } else {
-                adminLoginError.textContent = data.error || 'Authentication failed.';
-            }
-        } catch (e) {
-            adminLoginError.textContent = 'Connection error failed to query UTR logs.';
-        }
-    }
-
-    function escapeHTML(str) {
-        return str.replace(/[&<>'"]/g, 
-            tag => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;' }[tag] || tag)
-        );
-    }
-
-    // Access logs click handler
-    if (adminLoginBtn) {
-        adminLoginBtn.addEventListener('click', () => {
-            fetchTransactionLogs(adminAuthPwdInput.value);
-        });
-    }
-
-    // Refresh logs database handler
-    if (refreshLogsBtn) {
-        refreshLogsBtn.addEventListener('click', () => {
-            fetchTransactionLogs(adminAuthPwdInput.value);
-        });
-    }
+    // --- Admin Settings Modal Logic ---
 
     // Open settings panel
     if (adminTrigger) {
         adminTrigger.addEventListener('click', () => {
-            // Reset Admin Logs Login box view
-            adminLoginBox.style.display = 'flex';
-            adminLogsContainer.style.display = 'none';
-            adminAuthPwdInput.value = '';
-            adminLoginError.textContent = '';
-            
-            // Default to settings configuration tab
-            tabSettingsBtn.click();
-
             settingsModal.classList.add('active');
         });
     }
@@ -457,8 +293,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 configFee.value,
                 configDate.value,
                 configTime.value,
-                configDay.value,
-                configPassword.value
+                configDay.value
             );
             settingsModal.classList.remove('active');
         });

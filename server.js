@@ -21,7 +21,7 @@ const db = new sqlite3.Database(DB_FILE, (err) => {
         console.error('Failed to open database:', err.message);
     } else {
         console.log('Connected to SQLite database.');
-        // Create transactions table
+        // Create registrations table
         db.run(`CREATE TABLE IF NOT EXISTS registrations (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
             name TEXT NOT NULL,
@@ -94,7 +94,6 @@ app.post('/api/verify-utr', (req, res) => {
         }
 
         // Return successful verification response and the WhatsApp invite URL
-        // Because this is evaluated server-side, the user cannot access this link without a valid unique UTR!
         res.json({
             success: true,
             whatsappLink: configWhatsAppLink,
@@ -119,8 +118,8 @@ app.post('/api/transactions', (req, res) => {
     });
 });
 
-// Serve index.html at root route
-app.get('/', (req, res) => {
+// Fallback to serve index.html for undefined routes
+app.get('/(.*)', (req, res) => {
     res.sendFile(path.join(__dirname, 'index.html'));
 });
 

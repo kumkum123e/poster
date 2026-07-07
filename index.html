@@ -33,21 +33,9 @@
             <div id="step-details" class="checkout-step active">
                 <div class="step-title-header">
                     <h2>Seat Reservation</h2>
-                    <p>Provide your info to begin registration</p>
+                    <p>Review the details below to begin registration</p>
                 </div>
                 <form id="details-form" class="checkout-form">
-                    <div class="form-group">
-                        <label for="user-name">Full Name</label>
-                        <input type="text" id="user-name" required placeholder="Enter your full name">
-                    </div>
-                    <div class="form-group">
-                        <label for="user-email">Email Address</label>
-                        <input type="email" id="user-email" required placeholder="Enter your email address">
-                    </div>
-                    <div class="form-group">
-                        <label for="user-phone">WhatsApp Number</label>
-                        <input type="tel" id="user-phone" required placeholder="Enter WhatsApp number with country code" pattern="^[+]*[0-9\s\-()]{10,18}$">
-                    </div>
                     
                     <div class="checkout-summary-box">
                         <div class="summary-row">
@@ -171,21 +159,11 @@
         <div class="settings-card" style="max-width: 580px;">
             <button class="modal-close" id="close-settings">&times;</button>
             
-            <!-- Admin Navigation Tabs -->
-            <div class="payment-tabs" style="margin-bottom: 25px;">
-                <button class="pay-tab active" id="tab-settings-btn" data-target="admin-settings-tab">
-                    Config Settings
-                </button>
-                <button class="pay-tab" id="tab-logs-btn" data-target="admin-logs-tab">
-                    UTR Audit Logs
-                </button>
-            </div>
-
-            <!-- Tab 1: Configuration Settings Form -->
+            <!-- Configuration Settings Form -->
             <div id="admin-settings-tab" class="payment-panel active">
                 <div class="modal-header" style="margin-bottom: 20px;">
                     <h2>Settings Configuration</h2>
-                    <p>Modify date/pricing/WhatsApp details. Changes save to server.</p>
+                    <p>Modify date/pricing/WhatsApp details. Changes save locally in this browser.</p>
                 </div>
                 <form id="settings-form" class="checkout-form">
                     <div class="form-group">
@@ -212,53 +190,11 @@
                             <input type="text" id="config-day" required placeholder="SUNDAY">
                         </div>
                     </div>
-                    <div class="form-group">
-                        <label for="config-password">Admin Password (to view logs)</label>
-                        <input type="password" id="config-password" required placeholder="Enter new admin password" value="admin">
-                    </div>
                     <div class="settings-actions">
                         <button type="button" id="reset-settings-btn" class="settings-reset-btn">Reset to Default</button>
                         <button type="submit" class="settings-save-btn">Save Changes</button>
                     </div>
                 </form>
-            </div>
-
-            <!-- Tab 2: UTR Audit Logs List -->
-            <div id="admin-logs-tab" class="payment-panel">
-                <div class="modal-header" style="margin-bottom: 20px;">
-                    <h2>UTR Audit Database</h2>
-                    <p>Cross-reference logged UTR codes with your PhonePe account details.</p>
-                </div>
-
-                <!-- Password protection for viewing logs -->
-                <div id="admin-login-box" class="checkout-form">
-                    <div class="form-group">
-                        <label for="admin-auth-pwd">Enter Admin Password</label>
-                        <input type="password" id="admin-auth-pwd" placeholder="Enter admin password">
-                    </div>
-                    <div id="admin-login-error" style="color:#ef4444; font-size:0.85rem; font-weight:600; text-align:center;"></div>
-                    <button type="button" id="admin-login-btn" class="submit-btn">ACCESS AUDIT LOGS</button>
-                </div>
-
-                <!-- Log data container -->
-                <div id="admin-logs-container" style="display: none;">
-                    <div style="overflow-x: auto; max-height: 280px; border: 1px solid rgba(255,255,255,0.15); border-radius: 8px;">
-                        <table style="width: 100%; border-collapse: collapse; text-align: left; font-size: 0.85rem; color: var(--text-gray);">
-                            <thead>
-                                <tr style="background: rgba(255,255,255,0.08); border-bottom: 1px solid rgba(255,255,255,0.15);">
-                                    <th style="padding: 10px 12px;">Name</th>
-                                    <th style="padding: 10px 12px;">Phone</th>
-                                    <th style="padding: 10px 12px;">UTR Reference</th>
-                                    <th style="padding: 10px 12px;">Date</th>
-                                </tr>
-                            </thead>
-                            <tbody id="utr-logs-tbody">
-                                <!-- Appended dynamically -->
-                            </tbody>
-                        </table>
-                    </div>
-                    <button type="button" id="refresh-logs-btn" class="submit-btn" style="margin-top: 15px; padding: 10px;">Refresh Database</button>
-                </div>
             </div>
         </div>
     </div>
