@@ -79,7 +79,7 @@
                     <div id="upi-method" class="payment-panel active">
                         <div class="upi-qr-container">
                             <p class="qr-desc">Scan QR or tap it to pay directly via PhonePe/GPay</p>
-                            <a id="upi-deeplink" href="upi://pay?pa=94664771641@axl&pn=NLP%20Coach%20Dr%20GSR&am=99&cu=INR&tn=NLP%20Seminar" style="text-decoration: none; width: 100%; display: flex; flex-direction: column; align-items: center; gap: 12px; margin-bottom: 15px;">
+                            <a id="upi-deeplink" href="upi://pay?pa=94664771641@axl&pn=GAJENDER%20SINGH&am=99&cu=INR&tn=NLP%20Seminar" style="text-decoration: none; width: 100%; display: flex; flex-direction: column; align-items: center; gap: 12px; margin-bottom: 10px;">
                                 <div class="qr-code-placeholder">
                                     <img src="assets/phonepe_qr.jpg" alt="PhonePe QR Code" class="upi-qr-image">
                                     <div class="qr-scanner-line"></div>
@@ -91,6 +91,10 @@
                                     Tap to Pay via PhonePe / UPI
                                 </span>
                             </a>
+                            <button id="copy-upi-btn" type="button" class="submit-btn" style="background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.15); color: var(--text-gray); max-width: 280px; font-size: 0.85rem; padding: 10px 15px; display: inline-flex; align-items: center; justify-content: center; gap: 8px; font-weight: 600; text-transform: uppercase; margin-bottom: 10px; margin-top: 5px;">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-copy"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+                                <span id="copy-btn-text">Copy UPI ID</span>
+                            </button>
                             <div class="payment-timer">QR Code expires in: <span id="timer-val">05:00</span></div>
                             
                             <!-- Secure UTR Form -->
@@ -177,6 +181,10 @@
                     <div class="form-group">
                         <label for="config-upi">Merchant UPI ID (VPA)</label>
                         <input type="text" id="config-upi" required placeholder="e.g. 94664771641@axl">
+                    </div>
+                    <div class="form-group">
+                        <label for="config-payee-name">Payee Account Name</label>
+                        <input type="text" id="config-payee-name" required placeholder="e.g. GAJENDER SINGH">
                     </div>
                     <div class="form-group">
                         <label for="config-whatsapp">WhatsApp Group Invite Link</label>

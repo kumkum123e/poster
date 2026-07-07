@@ -46,6 +46,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const closeSettings = document.getElementById('close-settings');
     const settingsForm = document.getElementById('settings-form');
     const configUpi = document.getElementById('config-upi');
+    const configPayeeName = document.getElementById('config-payee-name');
     const configWhatsapp = document.getElementById('config-whatsapp');
     const configFee = document.getElementById('config-fee');
     const configDate = document.getElementById('config-date');
@@ -66,6 +67,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const time = localStorage.getItem('nlp_time') || DEFAULTS.time;
         const day = localStorage.getItem('nlp_day') || DEFAULTS.day;
         const upiId = localStorage.getItem('nlp_upi') || '94664771641@axl';
+        const payeeName = localStorage.getItem('nlp_payee_name') || 'GAJENDER SINGH';
 
         // Update displays in the checkout form summary card
         if (displayDate) displayDate.textContent = date;
@@ -81,18 +83,20 @@ document.addEventListener('DOMContentLoaded', () => {
         if (configTime) configTime.value = time;
         if (configDay) configDay.value = day;
         if (configUpi) configUpi.value = upiId;
+        if (configPayeeName) configPayeeName.value = payeeName;
 
         // Dynamically update the UPI deep link target
         const upiDeeplink = document.getElementById('upi-deeplink');
         if (upiDeeplink) {
             const numericFee = fee.replace(/\D/g, '') || '99';
-            upiDeeplink.href = `upi://pay?pa=${encodeURIComponent(upiId)}&pn=NLP%20Coach%20Dr%20GSR&am=${encodeURIComponent(numericFee)}&cu=INR&tn=NLP%20Seminar%20Registration`;
+            upiDeeplink.href = `upi://pay?pa=${encodeURIComponent(upiId)}&pn=${encodeURIComponent(payeeName)}&am=${encodeURIComponent(numericFee)}&cu=INR&tn=NLP%20Seminar%20Registration`;
         }
     }
 
     // Save configurations to LocalStorage
-    function saveConfig(upi, whatsapp, fee, date, time, day) {
+    function saveConfig(upi, payee, whatsapp, fee, date, time, day) {
         localStorage.setItem('nlp_upi', upi.trim());
+        localStorage.setItem('nlp_payee_name', payee.trim());
         localStorage.setItem('nlp_whatsapp', whatsapp.trim());
         localStorage.setItem('nlp_fee', fee.trim());
         localStorage.setItem('nlp_date', date.trim());
@@ -105,6 +109,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // Reset settings to default
     function resetConfig() {
         localStorage.removeItem('nlp_upi');
+        localStorage.removeItem('nlp_payee_name');
         localStorage.removeItem('nlp_whatsapp');
         localStorage.removeItem('nlp_fee');
         localStorage.removeItem('nlp_date');
@@ -297,6 +302,7 @@ document.addEventListener('DOMContentLoaded', () => {
             e.preventDefault();
             saveConfig(
                 configUpi.value,
+                configPayeeName.value,
                 configWhatsapp.value,
                 configFee.value,
                 configDate.value,
@@ -323,6 +329,28 @@ document.addEventListener('DOMContentLoaded', () => {
             settingsModal.classList.remove('active');
         }
     });
+
+    // Copy UPI ID button listener
+    const copyUpiBtn = document.getElementById('copy-upi-btn');
+    const copyBtnText = document.getElementById('copy-btn-text');
+
+    if (copyUpiBtn && copyBtnText) {
+        copyUpiBtn.addEventListener('click', () => {
+            const currentUpi = localStorage.getItem('nlp_upi') || '94664771641@axl';
+            navigator.clipboard.writeText(currentUpi).then(() => {
+                copyBtnText.textContent = 'Copied!';
+                copyUpiBtn.style.borderColor = 'var(--gold-primary)';
+                copyUpiBtn.style.color = 'var(--text-gold)';
+                setTimeout(() => {
+                    copyBtnText.textContent = 'Copy UPI ID';
+                    copyUpiBtn.style.borderColor = 'rgba(255,255,255,0.15)';
+                    copyUpiBtn.style.color = 'var(--text-gray)';
+                }, 2000);
+            }).catch(err => {
+                console.error('Failed to copy text: ', err);
+            });
+        });
+    }
 
     // --- Initialization ---
     loadConfig();
