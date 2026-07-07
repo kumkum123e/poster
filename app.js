@@ -85,11 +85,6 @@ document.addEventListener('DOMContentLoaded', () => {
         if (configUpi) configUpi.value = upiId;
         if (configPayeeName) configPayeeName.value = payeeName;
 
-        // Dynamically update the UPI deep link target
-        const upiDeeplink = document.getElementById('upi-deeplink');
-        if (upiDeeplink) {
-            upiDeeplink.href = `upi://pay?pa=${encodeURIComponent(upiId)}&pn=${encodeURIComponent(payeeName)}`;
-        }
     }
 
     // Save configurations to LocalStorage
