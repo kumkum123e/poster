@@ -29,9 +29,6 @@ body {
     background-color: var(--bg-dark);
     color: var(--text-white);
     min-height: 100vh;
-    display: flex;
-    justify-content: center;
-    align-items: center;
     overflow-x: hidden;
     position: relative;
     background: radial-gradient(circle at center, #0a1b3a 0%, #030816 100%);
@@ -106,10 +103,14 @@ body::after {
 .checkout-wrapper {
     width: 100%;
     max-width: 520px;
+    margin: 0 auto;
     padding: 40px 20px;
     z-index: 1;
+    min-height: 100vh;
     display: flex;
+    flex-direction: column;
     justify-content: center;
+    align-items: center;
 }
 
 .checkout-card {
