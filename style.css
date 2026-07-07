@@ -1,0 +1,712 @@
+/* ==========================================================================
+   Illusion to Reality - Direct Checkout Design System
+   ========================================================================== */
+
+:root {
+    --bg-dark: #030816;
+    --panel-blue: rgba(6, 17, 40, 0.85);
+    --gold-primary: #d4af37;
+    --gold-light: #f3e5ab;
+    --gold-dark: #aa7c11;
+    --gold-gradient: linear-gradient(135deg, #f3e5ab 0%, #d4af37 50%, #aa7c11 100%);
+    --text-white: #ffffff;
+    --text-gold: #e5c158;
+    --text-gray: #cbd5e1;
+    --glass-border: 1px solid rgba(212, 175, 55, 0.35);
+    --glow-shadow: 0 0 25px rgba(212, 175, 55, 0.25);
+    --font-serif: 'Cinzel', Georgia, serif;
+    --font-sans: 'Outfit', sans-serif;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: var(--font-sans);
+}
+
+body {
+    background-color: var(--bg-dark);
+    color: var(--text-white);
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow-x: hidden;
+    position: relative;
+    background: radial-gradient(circle at center, #0a1b3a 0%, #030816 100%);
+}
+
+/* Background Ambient Lighting */
+body::before {
+    content: '';
+    position: absolute;
+    top: -10%;
+    right: -10%;
+    width: 60vw;
+    height: 60vw;
+    background: radial-gradient(circle, rgba(212, 175, 55, 0.08) 0%, transparent 70%);
+    z-index: 0;
+    pointer-events: none;
+}
+
+body::after {
+    content: '';
+    position: absolute;
+    bottom: -10%;
+    left: -10%;
+    width: 50vw;
+    height: 50vw;
+    background: radial-gradient(circle, rgba(6, 42, 107, 0.25) 0%, transparent 70%);
+    z-index: 0;
+    pointer-events: none;
+}
+
+/* ==========================================================================
+   Admin Configuration Trigger Button
+   ========================================================================== */
+.admin-trigger-btn {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    background: rgba(10, 26, 58, 0.8);
+    border: 1px solid var(--gold-primary);
+    color: var(--text-gold);
+    padding: 10px 16px;
+    border-radius: 30px;
+    cursor: pointer;
+    z-index: 99;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-weight: 500;
+    font-size: 0.9rem;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
+    transition: all 0.3s ease;
+}
+
+.admin-trigger-btn:hover {
+    background: var(--gold-gradient);
+    color: #000;
+    box-shadow: 0 0 15px rgba(212, 175, 55, 0.6);
+    transform: translateY(-2px);
+}
+
+.admin-trigger-btn svg {
+    transition: transform 0.8s ease;
+}
+
+.admin-trigger-btn:hover svg {
+    transform: rotate(180deg);
+}
+
+/* ==========================================================================
+   Checkout Wrapper & Card Layout
+   ========================================================================== */
+.checkout-wrapper {
+    width: 100%;
+    max-width: 520px;
+    padding: 40px 20px;
+    z-index: 1;
+    display: flex;
+    justify-content: center;
+}
+
+.checkout-card {
+    background: var(--panel-blue);
+    border: 2px solid transparent;
+    border-image: var(--gold-gradient) 1;
+    border-radius: 16px;
+    width: 100%;
+    padding: 40px 35px;
+    box-shadow: 0 25px 60px rgba(0, 0, 0, 0.8), 0 0 40px rgba(212, 175, 55, 0.15);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+}
+
+/* Brand header */
+.checkout-brand-header {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.brand-certified {
+    font-size: 0.8rem;
+    font-weight: 700;
+    letter-spacing: 2px;
+    color: var(--text-gold);
+    display: block;
+    margin-bottom: 4px;
+}
+
+.brand-title {
+    font-family: var(--font-serif);
+    font-size: 2.1rem;
+    font-weight: 900;
+    letter-spacing: 1.5px;
+    background: var(--gold-gradient);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.5));
+}
+
+.brand-coach-tag {
+    font-size: 0.95rem;
+    color: var(--text-gray);
+    margin-top: 2px;
+}
+
+.brand-coach-tag strong {
+    color: var(--text-white);
+}
+
+.brand-divider {
+    height: 1px;
+    background: var(--gold-gradient);
+    width: 60%;
+    margin: 15px auto 0 auto;
+    position: relative;
+}
+
+.brand-divider::after {
+    content: '';
+    position: absolute;
+    top: -3px;
+    left: calc(50% - 4px);
+    width: 8px;
+    height: 8px;
+    background: var(--gold-primary);
+    transform: rotate(45deg);
+}
+
+/* Checkout step structure */
+.checkout-step {
+    display: none;
+}
+
+.checkout-step.active {
+    display: block;
+    animation: fadeIn 0.4s ease-out forwards;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(12px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.step-title-header {
+    margin-bottom: 25px;
+    text-align: center;
+}
+
+.step-title-header h2 {
+    font-size: 1.45rem;
+    font-weight: 700;
+    color: var(--text-white);
+    margin-bottom: 5px;
+}
+
+.step-title-header p {
+    font-size: 0.9rem;
+    color: var(--text-gray);
+}
+
+/* ==========================================================================
+   Checkout Form & Controls
+   ========================================================================== */
+.checkout-form {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.form-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 15px;
+}
+
+.form-group label {
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--text-gold);
+    letter-spacing: 0.5px;
+}
+
+.form-group input {
+    background: rgba(3, 8, 22, 0.6);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    border-radius: 8px;
+    padding: 12px 16px;
+    color: #fff;
+    font-size: 1rem;
+    outline: none;
+    transition: all 0.3s ease;
+}
+
+.form-group input:focus {
+    border-color: var(--gold-primary);
+    box-shadow: 0 0 10px rgba(212, 175, 55, 0.25);
+    background: rgba(3, 8, 22, 0.8);
+}
+
+/* Summary Box */
+.checkout-summary-box {
+    background: rgba(3, 8, 22, 0.5);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-left: 4px solid var(--gold-primary);
+    border-radius: 8px;
+    padding: 15px 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-top: 10px;
+}
+
+.summary-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 0.9rem;
+    color: var(--text-gray);
+}
+
+.summary-row strong {
+    font-size: 1.35rem;
+    color: var(--text-gold);
+    font-weight: 800;
+}
+
+.summary-row.highlight {
+    border-top: 1px dashed rgba(255, 255, 255, 0.15);
+    padding-top: 10px;
+    margin-top: 4px;
+}
+
+.summary-row.highlight span {
+    font-weight: 600;
+    color: var(--text-white);
+}
+
+/* Action button style */
+.submit-btn {
+    background: var(--gold-gradient);
+    border: none;
+    border-radius: 8px;
+    color: #030816;
+    padding: 15px;
+    font-size: 1.1rem;
+    font-weight: 800;
+    cursor: pointer;
+    width: 100%;
+    margin-top: 10px;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(212, 175, 55, 0.2);
+}
+
+.submit-btn:hover {
+    filter: brightness(1.1);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(212, 175, 55, 0.4);
+}
+
+.submit-btn:active {
+    transform: translateY(1px);
+}
+
+.submit-btn.animate-pulse {
+    animation: btnPulse 2s infinite;
+}
+
+@keyframes btnPulse {
+    0% { box-shadow: 0 4px 15px rgba(212, 175, 55, 0.2), 0 0 0 0px rgba(212, 175, 55, 0.2); }
+    70% { box-shadow: 0 4px 15px rgba(212, 175, 55, 0.2), 0 0 0 10px rgba(212, 175, 55, 0); }
+    100% { box-shadow: 0 4px 15px rgba(212, 175, 55, 0.2), 0 0 0 0px rgba(212, 175, 55, 0); }
+}
+
+/* ==========================================================================
+   Payment Tabs & Panel Styles
+   ========================================================================== */
+.payment-tabs {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+.pay-tab {
+    background: rgba(3, 8, 22, 0.5);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    color: var(--text-gray);
+    padding: 12px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 0.9rem;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    transition: all 0.3s ease;
+}
+
+.pay-tab.active {
+    background: rgba(212, 175, 55, 0.1);
+    border-color: var(--gold-primary);
+    color: var(--text-gold);
+}
+
+.payment-panel {
+    display: none;
+}
+
+.payment-panel.active {
+    display: block;
+    animation: fadeIn 0.3s forwards;
+}
+
+/* UPI QR Code Interface */
+.upi-qr-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 15px;
+    text-align: center;
+}
+
+.qr-desc {
+    font-size: 0.85rem;
+    color: var(--text-gray);
+}
+
+.qr-code-placeholder {
+    width: 240px;
+    height: 380px;
+    background: #fff;
+    padding: 10px;
+    border-radius: 12px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    overflow: hidden;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+}
+
+.upi-qr-image {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    border-radius: 6px;
+}
+
+.qr-scanner-line {
+    position: absolute;
+    left: 0;
+    width: 100%;
+    height: 2px;
+    background: #10b981;
+    box-shadow: 0 0 8px #10b981;
+    animation: qrScan 2.5s infinite linear;
+}
+
+@keyframes qrScan {
+    0% { top: 0; }
+    50% { top: 100%; }
+    100% { top: 0; }
+}
+
+.payment-timer {
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: #ef4444;
+    background: rgba(239, 68, 68, 0.1);
+    padding: 6px 12px;
+    border-radius: 20px;
+}
+
+/* ==========================================================================
+   Simulated Loading Spinner
+   ========================================================================== */
+.processing-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 40px 0;
+    gap: 15px;
+}
+
+.spinner {
+    width: 60px;
+    height: 60px;
+    position: relative;
+}
+
+.double-bounce1, .double-bounce2 {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    background-color: var(--gold-primary);
+    opacity: 0.6;
+    position: absolute;
+    top: 0;
+    left: 0;
+    animation: sk-bounce 2.0s infinite ease-in-out;
+}
+
+.double-bounce2 {
+    animation-delay: -1.0s;
+}
+
+@keyframes sk-bounce {
+    0%, 100% { transform: scale(0.0) }
+    50% { transform: scale(1.0) }
+}
+
+/* ==========================================================================
+   Checkout Success State & WhatsApp button
+   ========================================================================== */
+.success-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    padding: 10px 0;
+}
+
+/* Animated Checkmark icon */
+.checkmark-circle {
+    width: 80px;
+    height: 80px;
+    position: relative;
+    margin-bottom: 20px;
+}
+
+.checkmark-circle .background {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    background: #10b981;
+    position: absolute;
+    box-shadow: 0 4px 15px rgba(16, 185, 129, 0.4);
+}
+
+.checkmark-circle .checkmark {
+    display: block;
+}
+
+.checkmark-circle .checkmark.draw::after {
+    animation-duration: 800ms;
+    animation-timing-function: ease;
+    animation-name: checkmark;
+    transform: scaleX(-1) rotate(135deg);
+}
+
+.checkmark-circle .checkmark::after {
+    opacity: 1;
+    height: 38px;
+    width: 19px;
+    transform-origin: left top;
+    border-right: 4px solid #fff;
+    border-top: 4px solid #fff;
+    content: '';
+    left: 20px;
+    top: 42px;
+    position: absolute;
+}
+
+@keyframes checkmark {
+    0% { height: 0; width: 0; opacity: 1; }
+    20% { height: 0; width: 19px; opacity: 1; }
+    40% { height: 38px; width: 19px; opacity: 1; }
+    100% { height: 38px; width: 19px; opacity: 1; }
+}
+
+.success-container h2 {
+    font-size: 1.7rem;
+    color: #10b981;
+    margin-bottom: 12px;
+    font-family: var(--font-serif);
+}
+
+.success-container p {
+    font-size: 0.95rem;
+    color: var(--text-gray);
+    line-height: 1.5;
+    margin-bottom: 8px;
+}
+
+.whatsapp-prompt {
+    font-weight: 500;
+    color: var(--text-gold) !important;
+    margin-top: 10px;
+}
+
+.whatsapp-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    width: 100%;
+    background: #25d366;
+    color: #fff;
+    text-decoration: none;
+    font-weight: 800;
+    font-size: 1.15rem;
+    padding: 16px;
+    border-radius: 30px;
+    margin-top: 20px;
+    box-shadow: 0 6px 20px rgba(37, 211, 102, 0.4);
+    transition: all 0.3s ease;
+    animation: pulseWhatsapp 2s infinite;
+}
+
+.whatsapp-btn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 10px 25px rgba(37, 211, 102, 0.6);
+    filter: brightness(1.05);
+}
+
+@keyframes pulseWhatsapp {
+    0% { box-shadow: 0 6px 20px rgba(37, 211, 102, 0.4), 0 0 0 0px rgba(37, 211, 102, 0.3); }
+    70% { box-shadow: 0 6px 20px rgba(37, 211, 102, 0.4), 0 0 0 12px rgba(37, 211, 102, 0); }
+    100% { box-shadow: 0 6px 20px rgba(37, 211, 102, 0.4), 0 0 0 0px rgba(37, 211, 102, 0); }
+}
+
+/* ==========================================================================
+   Admin Configuration Modal Overlay Sizing
+   ========================================================================== */
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(3, 8, 22, 0.85);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    z-index: 100;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.4s ease;
+    padding: 20px;
+}
+
+.modal-overlay.active {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+.settings-card {
+    background: #061128;
+    border: 2px solid var(--gold-primary);
+    border-radius: 16px;
+    width: 100%;
+    max-width: 480px;
+    padding: 35px 30px;
+    position: relative;
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.8), 0 0 30px rgba(212, 175, 55, 0.15);
+    transform: translateY(40px);
+    transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.15);
+}
+
+.modal-overlay.active .settings-card {
+    transform: translateY(0);
+}
+
+.modal-close {
+    position: absolute;
+    top: 15px;
+    right: 18px;
+    background: transparent;
+    border: none;
+    font-size: 2rem;
+    color: var(--text-gray);
+    cursor: pointer;
+    line-height: 1;
+    transition: color 0.2s ease;
+}
+
+.modal-close:hover {
+    color: var(--gold-primary);
+}
+
+.modal-header {
+    text-align: center;
+    margin-bottom: 25px;
+}
+
+.modal-header h2 {
+    font-family: var(--font-serif);
+    font-size: 1.8rem;
+    color: var(--text-white);
+    margin-bottom: 6px;
+    letter-spacing: 1px;
+}
+
+.modal-header p {
+    font-size: 0.9rem;
+    color: var(--text-gray);
+}
+
+.settings-reset-btn {
+    background: rgba(239, 68, 68, 0.1);
+    border: 1px solid #ef4444;
+    color: #ef4444;
+    padding: 12px 18px;
+    border-radius: 8px;
+    font-size: 0.95rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.settings-reset-btn:hover {
+    background: #ef4444;
+    color: #fff;
+}
+
+.settings-actions {
+    display: flex;
+    justify-content: space-between;
+    gap: 15px;
+    margin-top: 15px;
+}
+
+.settings-save-btn {
+    flex-grow: 1;
+    margin-top: 0;
+}
+
+/* ==========================================================================
+   Responsive Adaptations
+   ========================================================================== */
+@media (max-width: 480px) {
+    .checkout-wrapper {
+        padding: 15px 10px;
+    }
+    
+    .checkout-card {
+        padding: 30px 20px;
+    }
+    
+    .brand-title {
+        font-size: 1.8rem;
+    }
+    
+    .form-row {
+        grid-template-columns: 1fr;
+        gap: 20px;
+    }
+}
