@@ -88,8 +88,7 @@ document.addEventListener('DOMContentLoaded', () => {
         // Dynamically update the UPI deep link target
         const upiDeeplink = document.getElementById('upi-deeplink');
         if (upiDeeplink) {
-            const numericFee = fee.replace(/\D/g, '') || '99';
-            upiDeeplink.href = `upi://pay?pa=${encodeURIComponent(upiId)}&pn=${encodeURIComponent(payeeName)}&am=${encodeURIComponent(numericFee)}&cu=INR&tn=NLP%20Seminar%20Registration`;
+            upiDeeplink.href = `upi://pay?pa=${encodeURIComponent(upiId)}&pn=${encodeURIComponent(payeeName)}`;
         }
     }
 
