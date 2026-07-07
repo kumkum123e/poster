@@ -65,7 +65,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const date = localStorage.getItem('nlp_date') || DEFAULTS.date;
         const time = localStorage.getItem('nlp_time') || DEFAULTS.time;
         const day = localStorage.getItem('nlp_day') || DEFAULTS.day;
-        const upiId = localStorage.getItem('nlp_upi') || '9876543210@ybl';
+        const upiId = localStorage.getItem('nlp_upi') || '94664771641@axl';
 
         // Update displays in the checkout form summary card
         if (displayDate) displayDate.textContent = date;
