@@ -85,10 +85,11 @@ document.addEventListener('DOMContentLoaded', () => {
         if (configUpi) configUpi.value = upiId;
         if (configPayeeName) configPayeeName.value = payeeName;
 
-        // Dynamically update the UPI deep link target (targeting PhonePe custom scheme)
+        // Dynamically update the UPI deep link target
         const upiDeeplink = document.getElementById('upi-deeplink');
         if (upiDeeplink) {
-            upiDeeplink.href = `phonepe://pay?pa=${encodeURIComponent(upiId)}&pn=${encodeURIComponent(payeeName)}`;
+            const numericFee = fee.replace(/\D/g, '') || '99';
+            upiDeeplink.href = `upi://pay?pa=${encodeURIComponent(upiId)}&pn=${encodeURIComponent(payeeName)}&am=${encodeURIComponent(numericFee)}&cu=INR&tn=NLP%20Seminar%20Registration`;
         }
     }
 
