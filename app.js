@@ -3,11 +3,10 @@
 // ==========================================================================
 
 document.addEventListener('DOMContentLoaded', () => {
-    // --- Application Constants & Defaults ---
     const DEFAULTS = {
         whatsappLink: 'https://chat.whatsapp.com/Ky6tGrN9THs6xEndeuNrqy',
         fee: '99/-',
-        date: '31-5-2026',
+        date: '12 July 2026',
         time: '9:00 PM',
         day: 'SUNDAY'
     };
