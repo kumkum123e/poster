@@ -85,6 +85,11 @@ document.addEventListener('DOMContentLoaded', () => {
         if (configUpi) configUpi.value = upiId;
         if (configPayeeName) configPayeeName.value = payeeName;
 
+        // Dynamically update the UPI deep link target (targeting PhonePe custom scheme)
+        const upiDeeplink = document.getElementById('upi-deeplink');
+        if (upiDeeplink) {
+            upiDeeplink.href = `phonepe://pay?pa=${encodeURIComponent(upiId)}&pn=${encodeURIComponent(payeeName)}`;
+        }
     }
 
     // Save configurations to LocalStorage

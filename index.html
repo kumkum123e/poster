@@ -75,27 +75,15 @@
                 </div>
 
                 <div class="payment-methods-content">
-                    <!-- UPI Method -->
                     <div id="upi-method" class="payment-panel active">
                         <div class="upi-qr-container">
                             <p class="qr-desc">Scan QR Code using GPay, PhonePe, Paytm, or BHIM</p>
-                            <div class="qr-code-placeholder" style="margin-bottom: 10px;">
-                                <img src="assets/phonepe_qr.jpg" alt="PhonePe QR Code" class="upi-qr-image">
-                                <div class="qr-scanner-line"></div>
-                            </div>
-                            
-                            <!-- Copy UPI ID Button -->
-                            <button id="copy-upi-btn" type="button" class="submit-btn animate-pulse" style="background: linear-gradient(135deg, #10b981 0%, #059669 100%); color: #fff; width: 100%; max-width: 280px; font-size: 0.9rem; padding: 12px; display: inline-flex; align-items: center; justify-content: center; gap: 8px; font-weight: 700; border-radius: 8px; border: none; box-shadow: 0 4px 15px rgba(16, 185, 129, 0.35); text-transform: uppercase; cursor: pointer; transition: all 0.3s ease;">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="feather feather-copy"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
-                                <span id="copy-btn-text">COPY UPI ID TO PAY</span>
-                            </button>
-                            <p class="copy-instruction" style="font-size: 0.78rem; color: var(--text-gray); margin-top: 2px; margin-bottom: 5px; max-width: 280px; line-height: 1.4; text-align: center;">
-                                Tap to copy, open PhonePe/GPay, and paste to pay <strong class="config-fee-text">99/-</strong>.
-                            </p>
-                            <div id="copy-alert" class="copy-alert-box" style="display: none; background: rgba(16, 185, 129, 0.15); border: 1px solid #10b981; color: #10b981; padding: 8px 12px; border-radius: 6px; font-size: 0.8rem; font-weight: 600; text-align: center; width: 100%; max-width: 280px; margin-top: 5px;">
-                                UPI ID Copied! Paste it in your app to pay.
-                            </div>
-
+                            <a id="upi-deeplink" href="phonepe://pay?pa=94664771641@axl&pn=GAJENDER%20SINGH" style="text-decoration: none; display: block; margin-bottom: 10px;">
+                                <div class="qr-code-placeholder" style="margin-bottom: 10px;">
+                                    <img src="assets/phonepe_qr.jpg" alt="PhonePe QR Code" class="upi-qr-image">
+                                    <div class="qr-scanner-line"></div>
+                                </div>
+                            </a>
                             <div class="payment-timer">QR Code expires in: <span id="timer-val">05:00</span></div>
                             
                             <!-- Secure UTR Form -->
