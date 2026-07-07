@@ -9,8 +9,7 @@ document.addEventListener('DOMContentLoaded', () => {
         fee: '99/-',
         date: '12 July 2026',
         time: '9:00 PM',
-        day: 'SUNDAY',
-        upiId: '9876543210@ybl'
+        day: 'SUNDAY'
     };
 
     // --- DOM Elements ---
@@ -19,11 +18,13 @@ document.addEventListener('DOMContentLoaded', () => {
     const displayTime = document.getElementById('summary-time');
 
     // Steps
+    const stepDetails = document.getElementById('step-details');
     const stepPayment = document.getElementById('step-payment');
     const stepProcessing = document.getElementById('step-processing');
     const stepSuccess = document.getElementById('step-success');
 
     // Forms & Inputs
+    const detailsForm = document.getElementById('details-form');
     const upiPaymentForm = document.getElementById('upi-payment-form');
     const userUtrInput = document.getElementById('user-utr');
     const upiErrorMsg = document.getElementById('upi-error-msg');
@@ -44,16 +45,12 @@ document.addEventListener('DOMContentLoaded', () => {
     const settingsModal = document.getElementById('settings-modal');
     const closeSettings = document.getElementById('close-settings');
     const settingsForm = document.getElementById('settings-form');
-    const configUpi = document.getElementById('config-upi');
     const configWhatsapp = document.getElementById('config-whatsapp');
     const configFee = document.getElementById('config-fee');
     const configDate = document.getElementById('config-date');
     const configTime = document.getElementById('config-time');
     const configDay = document.getElementById('config-day');
     const resetSettingsBtn = document.getElementById('reset-settings-btn');
-
-    // UPI Redirection deep link element
-    const upiDeeplink = document.getElementById('upi-deeplink');
 
     // --- App State ---
     let activeTimer = null;
@@ -67,7 +64,6 @@ document.addEventListener('DOMContentLoaded', () => {
         const date = localStorage.getItem('nlp_date') || DEFAULTS.date;
         const time = localStorage.getItem('nlp_time') || DEFAULTS.time;
         const day = localStorage.getItem('nlp_day') || DEFAULTS.day;
-        const upi = localStorage.getItem('nlp_upi') || DEFAULTS.upiId;
 
         // Update displays in the checkout form summary card
         if (displayDate) displayDate.textContent = date;
@@ -77,25 +73,15 @@ document.addEventListener('DOMContentLoaded', () => {
         configFeeTexts.forEach(el => el.textContent = fee);
 
         // Prepopulate Settings inputs
-        if (configUpi) configUpi.value = upi;
         if (configWhatsapp) configWhatsapp.value = whatsapp;
         if (configFee) configFee.value = fee;
         if (configDate) configDate.value = date;
         if (configTime) configTime.value = time;
         if (configDay) configDay.value = day;
-
-        // Dynamically build and set the UPI deep link URL
-        if (upiDeeplink) {
-            const cleanAmount = fee.replace(/[^0-9.]/g, ''); // Extract e.g. "99" from "99/-"
-            const payeeName = encodeURIComponent('NLP Coach Dr GSR');
-            const note = encodeURIComponent('Seminar Registration');
-            upiDeeplink.href = `upi://pay?pa=${upi.trim()}&pn=${payeeName}&am=${cleanAmount}&cu=INR&tn=${note}`;
-        }
     }
 
     // Save configurations to LocalStorage
-    function saveConfig(upi, whatsapp, fee, date, time, day) {
-        localStorage.setItem('nlp_upi', upi.trim());
+    function saveConfig(whatsapp, fee, date, time, day) {
         localStorage.setItem('nlp_whatsapp', whatsapp.trim());
         localStorage.setItem('nlp_fee', fee.trim());
         localStorage.setItem('nlp_date', date.trim());
@@ -107,7 +93,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Reset settings to default
     function resetConfig() {
-        localStorage.removeItem('nlp_upi');
         localStorage.removeItem('nlp_whatsapp');
         localStorage.removeItem('nlp_fee');
         localStorage.removeItem('nlp_date');
@@ -119,6 +104,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Switch active step in checkout card
     function switchStep(activeStepElement) {
+        stepDetails.classList.remove('active');
         stepPayment.classList.remove('active');
         stepProcessing.classList.remove('active');
         stepSuccess.classList.remove('active');
@@ -205,6 +191,15 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // --- Interactive Listeners ---
 
+    // Step 1 Details Form Submit
+    if (detailsForm) {
+        detailsForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            switchStep(stepPayment);
+            startUPITimer(300); // 5 minute countdown
+        });
+    }
+
     // Step 2 UPI Payment UTR form submit
     if (upiPaymentForm) {
         upiPaymentForm.addEventListener('submit', (e) => {
@@ -289,7 +284,6 @@ document.addEventListener('DOMContentLoaded', () => {
         settingsForm.addEventListener('submit', (e) => {
             e.preventDefault();
             saveConfig(
-                configUpi.value,
                 configWhatsapp.value,
                 configFee.value,
                 configDate.value,
@@ -319,5 +313,4 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // --- Initialization ---
     loadConfig();
-    startUPITimer(300); // Start the 5-minute countdown immediately on page load
 });
