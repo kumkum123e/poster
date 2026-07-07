@@ -45,6 +45,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const settingsModal = document.getElementById('settings-modal');
     const closeSettings = document.getElementById('close-settings');
     const settingsForm = document.getElementById('settings-form');
+    const configUpi = document.getElementById('config-upi');
     const configWhatsapp = document.getElementById('config-whatsapp');
     const configFee = document.getElementById('config-fee');
     const configDate = document.getElementById('config-date');
@@ -64,6 +65,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const date = localStorage.getItem('nlp_date') || DEFAULTS.date;
         const time = localStorage.getItem('nlp_time') || DEFAULTS.time;
         const day = localStorage.getItem('nlp_day') || DEFAULTS.day;
+        const upiId = localStorage.getItem('nlp_upi') || '9876543210@ybl';
 
         // Update displays in the checkout form summary card
         if (displayDate) displayDate.textContent = date;
@@ -78,10 +80,19 @@ document.addEventListener('DOMContentLoaded', () => {
         if (configDate) configDate.value = date;
         if (configTime) configTime.value = time;
         if (configDay) configDay.value = day;
+        if (configUpi) configUpi.value = upiId;
+
+        // Dynamically update the UPI deep link target
+        const upiDeeplink = document.getElementById('upi-deeplink');
+        if (upiDeeplink) {
+            const numericFee = fee.replace(/\D/g, '') || '99';
+            upiDeeplink.href = `upi://pay?pa=${encodeURIComponent(upiId)}&pn=NLP%20Coach%20Dr%20GSR&am=${encodeURIComponent(numericFee)}&cu=INR&tn=NLP%20Seminar%20Registration`;
+        }
     }
 
     // Save configurations to LocalStorage
-    function saveConfig(whatsapp, fee, date, time, day) {
+    function saveConfig(upi, whatsapp, fee, date, time, day) {
+        localStorage.setItem('nlp_upi', upi.trim());
         localStorage.setItem('nlp_whatsapp', whatsapp.trim());
         localStorage.setItem('nlp_fee', fee.trim());
         localStorage.setItem('nlp_date', date.trim());
@@ -93,6 +104,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Reset settings to default
     function resetConfig() {
+        localStorage.removeItem('nlp_upi');
         localStorage.removeItem('nlp_whatsapp');
         localStorage.removeItem('nlp_fee');
         localStorage.removeItem('nlp_date');
@@ -284,6 +296,7 @@ document.addEventListener('DOMContentLoaded', () => {
         settingsForm.addEventListener('submit', (e) => {
             e.preventDefault();
             saveConfig(
+                configUpi.value,
                 configWhatsapp.value,
                 configFee.value,
                 configDate.value,

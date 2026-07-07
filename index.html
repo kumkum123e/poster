@@ -78,11 +78,19 @@
                     <!-- UPI Method -->
                     <div id="upi-method" class="payment-panel active">
                         <div class="upi-qr-container">
-                            <p class="qr-desc">Scan QR Code using GPay, PhonePe, Paytm, or BHIM</p>
-                            <div class="qr-code-placeholder">
-                                <img src="assets/phonepe_qr.jpg" alt="PhonePe QR Code" class="upi-qr-image">
-                                <div class="qr-scanner-line"></div>
-                            </div>
+                            <p class="qr-desc">Scan QR or tap it to pay directly via PhonePe/GPay</p>
+                            <a id="upi-deeplink" href="upi://pay?pa=9876543210@ybl&pn=NLP%20Coach%20Dr%20GSR&am=99&cu=INR&tn=NLP%20Seminar" style="text-decoration: none; width: 100%; display: flex; flex-direction: column; align-items: center; gap: 12px; margin-bottom: 15px;">
+                                <div class="qr-code-placeholder">
+                                    <img src="assets/phonepe_qr.jpg" alt="PhonePe QR Code" class="upi-qr-image">
+                                    <div class="qr-scanner-line"></div>
+                                </div>
+                                <span class="submit-btn" style="background: linear-gradient(135deg, #5f259f, #8b3dff); max-width: 280px; font-size: 0.85rem; padding: 10px 15px; display: inline-flex; align-items: center; justify-content: center; gap: 8px; font-weight: 600; text-transform: uppercase;">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-wallet2" viewBox="0 0 16 16">
+                                      <path d="M12.136.326A1.5 1.5 0 0 1 14 1.78V3h.5A1.5 1.5 0 0 1 16 4.5v9a1.5 1.5 0 0 1-1.5 1.5h-13A1.5 1.5 0 0 1 0 13.5v-9A1.5 1.5 0 0 1 1.5 3H2V1.78a1.5 1.5 0 0 1 1.864-1.454zM3 3h9V1.78a.5.5 0 0 0-.62-.485L3.62 2.295A.5.5 0 0 0 3 2.78zm11.5 1h-13a.5.5 0 0 0-.5.5v9a.5.5 0 0 0 .5.5h13a.5.5 0 0 0 .5-.5v-9a.5.5 0 0 0-.5-.5"/>
+                                    </svg>
+                                    Tap to Pay via PhonePe / UPI
+                                </span>
+                            </a>
                             <div class="payment-timer">QR Code expires in: <span id="timer-val">05:00</span></div>
                             
                             <!-- Secure UTR Form -->
@@ -166,6 +174,10 @@
                     <p>Modify date/pricing/WhatsApp details. Changes save locally in this browser.</p>
                 </div>
                 <form id="settings-form" class="checkout-form">
+                    <div class="form-group">
+                        <label for="config-upi">Merchant UPI ID (VPA)</label>
+                        <input type="text" id="config-upi" required placeholder="e.g. 9876543210@ybl">
+                    </div>
                     <div class="form-group">
                         <label for="config-whatsapp">WhatsApp Group Invite Link</label>
                         <input type="url" id="config-whatsapp" required placeholder="https://chat.whatsapp.com/...">
