@@ -36,6 +36,18 @@
                     <p>Review the details below to begin registration</p>
                 </div>
                 <form id="details-form" class="checkout-form">
+                    <div class="form-group">
+                        <label for="user-name">Full Name</label>
+                        <input type="text" id="user-name" required placeholder="e.g. John Doe">
+                    </div>
+                    <div class="form-group">
+                        <label for="user-email">Email Address</label>
+                        <input type="email" id="user-email" required placeholder="e.g. john@example.com">
+                    </div>
+                    <div class="form-group">
+                        <label for="user-phone">Phone Number</label>
+                        <input type="tel" id="user-phone" required placeholder="e.g. 9876543210" pattern="[0-9]{10,12}" title="Please enter a valid phone number (10 to 12 digits)">
+                    </div>
                     
                     <div class="checkout-summary-box">
                         <div class="summary-row">
@@ -77,14 +89,30 @@
                 <div class="payment-methods-content">
                     <div id="upi-method" class="payment-panel active">
                         <div class="upi-qr-container">
-                            <p class="qr-desc">Scan QR or tap it to pay. Enter fee amount <strong class="config-fee-text">99/-</strong> in your app.</p>
-                            <a id="upi-deeplink" href="upi://pay?pa=94664771641@axl&pn=GAJENDER%20SINGH&am=99&cu=INR&tn=NLP%20Seminar" style="text-decoration: none; display: block; margin-bottom: 10px;">
+                            <!-- Dynamic vs Static QR Selector Toggle -->
+                            <div class="qr-toggle-container">
+                                <button type="button" id="qr-toggle-dynamic" class="qr-toggle-btn active">Dynamic QR</button>
+                                <button type="button" id="qr-toggle-static" class="qr-toggle-btn">Static QR</button>
+                            </div>
+                            
+                            <p id="upi-instructions" class="qr-desc">Scan QR to pay exact fee <strong class="config-fee-text">99/-</strong>. Payee & amount pre-filled.</p>
+                            
+                            <a id="upi-deeplink" href="upi://pay?pa=94664771641@axl&pn=GAJENDER%20SINGH&am=99&cu=INR&tn=NLP%20Seminar" style="text-decoration: none; display: block; margin-bottom: 5px;">
                                 <div class="qr-code-placeholder" style="margin-bottom: 10px;">
-                                    <img src="assets/phonepe_qr.jpg" alt="PhonePe QR Code" class="upi-qr-image">
+                                    <!-- Dynamic QR Canvas -->
+                                    <canvas id="upi-qr-canvas" class="upi-qr-image" style="background:#fff; display: block; width: 100%; height: 100%;"></canvas>
+                                    <!-- Static QR Image -->
+                                    <img id="upi-qr-static-img" src="assets/phonepe_qr.jpg" alt="PhonePe QR Code" class="upi-qr-image" style="display: none; width: 100%; height: 100%; object-fit: contain;">
                                     <div class="qr-scanner-line"></div>
                                 </div>
                             </a>
-                            <div class="payment-timer">QR Code expires in: <span id="timer-val">05:00</span></div>
+                            
+                            <!-- Mobile Direct Link Button -->
+                            <a id="upi-mobile-pay-btn" href="upi://pay?pa=94664771641@axl&pn=GAJENDER%20SINGH&am=99&cu=INR&tn=NLP%20Seminar" class="upi-mobile-btn" target="_blank">
+                                📱 PAY DIRECTLY VIA UPI APP
+                            </a>
+
+                            <div class="payment-timer" style="margin-top: 5px;">QR Code expires in: <span id="timer-val">05:00</span></div>
                             
                             <!-- Secure UTR Form -->
                             <form id="upi-payment-form" class="checkout-form" style="width: 100%; gap: 10px;">
@@ -160,11 +188,17 @@
         <div class="settings-card" style="max-width: 580px;">
             <button class="modal-close" id="close-settings">&times;</button>
             
+            <!-- Tab headers for Settings and Logs -->
+            <div class="modal-tabs" style="display: flex; gap: 10px; margin-bottom: 20px; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 10px;">
+                <button type="button" id="admin-tab-settings" class="pay-tab active" style="flex: 1; padding: 8px;">Settings</button>
+                <button type="button" id="admin-tab-logs" class="pay-tab" style="flex: 1; padding: 8px;">Transaction Logs</button>
+            </div>
+            
             <!-- Configuration Settings Form -->
             <div id="admin-settings-tab" class="payment-panel active">
                 <div class="modal-header" style="margin-bottom: 20px;">
                     <h2>Settings Configuration</h2>
-                    <p>Modify date/pricing/WhatsApp details. Changes save locally in this browser.</p>
+                    <p>Modify date/pricing/WhatsApp details. Changes save on the server.</p>
                 </div>
                 <form id="settings-form" class="checkout-form">
                     <div class="form-group">
@@ -199,16 +233,67 @@
                             <input type="text" id="config-day" required placeholder="SUNDAY">
                         </div>
                     </div>
-                    <div class="settings-actions">
-                        <button type="button" id="reset-settings-btn" class="settings-reset-btn">Reset to Default</button>
-                        <button type="submit" class="settings-save-btn">Save Changes</button>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="config-qr-mode">Default QR Mode</label>
+                            <select id="config-qr-mode" style="background: rgba(3, 8, 22, 0.6); border: 1px solid rgba(255, 255, 255, 0.15); border-radius: 8px; padding: 12px; color: #fff; font-size: 1rem; outline: none; transition: all 0.3s ease;">
+                                <option value="dynamic">Dynamic QR (Auto-filled)</option>
+                                <option value="static">Static QR (Uploaded Template)</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="config-static-path">Static QR Image Path</label>
+                            <input type="text" id="config-static-path" placeholder="assets/phonepe_qr.jpg">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="config-admin-password">Change Admin Password</label>
+                        <input type="password" id="config-admin-password" placeholder="Leave blank to keep current password">
+                    </div>
+                    <div class="settings-actions" style="display: flex; gap: 15px; margin-top: 10px;">
+                        <button type="button" id="reset-settings-btn" class="settings-reset-btn" style="flex: 1; padding: 12px; background: rgba(239, 68, 68, 0.15); border: 1px solid #ef4444; color: #ef4444; border-radius: 8px; cursor: pointer; font-weight: 600; font-size: 0.95rem;">Reset to Default</button>
+                        <button type="submit" class="settings-save-btn" style="flex: 1; padding: 12px; background: var(--gold-gradient); border: none; color: #030816; border-radius: 8px; cursor: pointer; font-weight: 800; text-align: center; font-size: 0.95rem;">Save Changes</button>
                     </div>
                 </form>
+            </div>
+            
+            <!-- Transaction Logs Tab Panel -->
+            <div id="admin-logs-tab" class="payment-panel">
+                <div class="modal-header" style="margin-bottom: 20px;">
+                    <h2>Transaction Logs</h2>
+                    <p>Unlock with the admin password to view UTR logs.</p>
+                </div>
+                
+                <form id="logs-auth-form" class="checkout-form" style="margin-bottom: 20px;">
+                    <div class="form-group">
+                        <label for="logs-password">Admin Password</label>
+                        <input type="password" id="logs-password" required placeholder="Enter admin password to view UTR logs">
+                    </div>
+                    <button type="submit" class="submit-btn" style="margin-top: 5px;">UNLOCK LOGS</button>
+                    <div id="logs-auth-error" style="color: #ef4444; font-size: 0.85rem; font-weight: 600; text-align: center; margin-top: 5px;"></div>
+                </form>
+
+                <div id="logs-table-container" style="display: none; max-height: 280px; overflow-y: auto; border: 1px solid rgba(255,255,255,0.1); border-radius: 8px;">
+                    <table style="width: 100%; border-collapse: collapse; font-size: 0.85rem; text-align: left;">
+                        <thead style="background: rgba(212, 175, 55, 0.1); color: var(--text-gold); font-weight: 600;">
+                            <tr>
+                                <th style="padding: 10px; border-bottom: 1px solid rgba(255,255,255,0.15);">Name</th>
+                                <th style="padding: 10px; border-bottom: 1px solid rgba(255,255,255,0.15);">Phone</th>
+                                <th style="padding: 10px; border-bottom: 1px solid rgba(255,255,255,0.15);">UTR Code</th>
+                                <th style="padding: 10px; border-bottom: 1px solid rgba(255,255,255,0.15);">Date</th>
+                            </tr>
+                        </thead>
+                        <tbody id="logs-table-body">
+                            <!-- Populated dynamically via JS -->
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </div>
     </div>
 
     <!-- JS Logic -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcode/1.5.0/qrcode.min.js"></script>
     <script src="app.js" defer></script>
 </body>
 </html>

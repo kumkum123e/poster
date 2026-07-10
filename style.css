@@ -711,3 +711,79 @@ body::after {
         gap: 20px;
     }
 }
+
+/* ==========================================================================
+   UPI QR Toggle & Mobile Button Style Enhancements
+   ========================================================================== */
+.qr-toggle-container {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 10px;
+    background: rgba(3, 8, 22, 0.4);
+    padding: 4px;
+    border-radius: 8px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    width: 100%;
+}
+
+.qr-toggle-btn {
+    flex: 1;
+    background: transparent;
+    border: none;
+    color: var(--text-gray);
+    padding: 8px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: 600;
+    font-size: 0.85rem;
+    transition: all 0.3s ease;
+}
+
+.qr-toggle-btn.active {
+    background: var(--gold-gradient);
+    color: #030816;
+    box-shadow: 0 2px 8px rgba(212, 175, 55, 0.3);
+}
+
+.upi-mobile-btn {
+    display: block;
+    width: 100%;
+    text-align: center;
+    background: #059669;
+    color: #fff;
+    padding: 12px;
+    border-radius: 8px;
+    text-decoration: none;
+    font-weight: 700;
+    font-size: 0.95rem;
+    margin-top: 10px;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(5, 150, 105, 0.2);
+}
+
+.upi-mobile-btn:hover {
+    background: #10b981;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(16, 185, 129, 0.4);
+}
+
+.upi-mobile-btn:active {
+    transform: translateY(1px);
+}
+
+/* Form input additions styling (Select element) */
+.form-group select:focus {
+    border-color: var(--gold-primary);
+    box-shadow: 0 0 10px rgba(212, 175, 55, 0.25);
+    background: rgba(3, 8, 22, 0.8);
+}
+
+/* Logs viewer styles */
+.logs-table th, .logs-table td {
+    padding: 12px 10px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.logs-table tbody tr:hover {
+    background: rgba(255, 255, 255, 0.03);
+}
