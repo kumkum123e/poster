@@ -11,14 +11,8 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <!-- Floating Admin Settings Trigger -->
-    <button id="admin-trigger" class="admin-trigger-btn" title="Configure Checkout Details">
-        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg>
-        <span>Configure</span>
-    </button>
-
     <div class="checkout-wrapper">
-        <!-- Main Checkout Box Container -->
+        <!-- Main Card Container -->
         <div class="checkout-card">
             
             <!-- Event Visual Brand Header -->
@@ -29,271 +23,23 @@
                 <div class="brand-divider"></div>
             </div>
 
-            <!-- Step 1: User details -->
-            <div id="step-details" class="checkout-step active">
-                <div class="step-title-header">
-                    <h2>Seat Reservation</h2>
-                    <p>Review the details below to begin registration</p>
-                </div>
-                <form id="details-form" class="checkout-form">
-                    <div class="form-group">
-                        <label for="user-name">Full Name</label>
-                        <input type="text" id="user-name" required placeholder="e.g. John Doe">
-                    </div>
-                    <div class="form-group">
-                        <label for="user-email">Email Address</label>
-                        <input type="email" id="user-email" required placeholder="e.g. john@example.com">
-                    </div>
-                    <div class="form-group">
-                        <label for="user-phone">Phone Number</label>
-                        <input type="tel" id="user-phone" required placeholder="e.g. 9876543210" pattern="[0-9]{10,12}" title="Please enter a valid phone number (10 to 12 digits)">
-                    </div>
-                    
-                    <div class="checkout-summary-box">
-                        <div class="summary-row">
-                            <span>Seminar Date:</span>
-                            <span id="summary-date">12 July 2026</span>
-                        </div>
-                        <div class="summary-row">
-                            <span>Seminar Time:</span>
-                            <span id="summary-time">9:00 PM</span>
-                        </div>
-                        <div class="summary-row highlight">
-                            <span>Registration Fee:</span>
-                            <strong class="config-fee-text">99/-</strong>
-                        </div>
-                    </div>
-                    
-                    <button type="submit" class="submit-btn animate-pulse">PROCEED TO PAYMENT</button>
-                </form>
-            </div>
-
-            <!-- Step 2: Payment Selection -->
-            <div id="step-payment" class="checkout-step">
-                <div class="step-title-header">
-                    <h2>Choose Payment Method</h2>
-                    <p>Amount to Pay: <strong class="config-fee-text">99/-</strong></p>
-                </div>
+            <!-- WhatsApp Success/Join Step -->
+            <div class="success-container">
+                <p class="whatsapp-prompt" style="font-size: 1.05rem; line-height: 1.6; margin-bottom: 20px; color: var(--text-gray);">
+                    To secure your seat materials and receive updates, join the official client community below:
+                </p>
                 
-                <div class="payment-tabs">
-                    <button class="pay-tab active" data-target="upi-method">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="2" ry="2"></rect><path d="M12 18v-6"></path><path d="M12 8h.01"></path></svg>
-                        UPI / QR Code
-                    </button>
-                    <button class="pay-tab" data-target="card-method">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="1" y="4" width="22" height="16" rx="2" ry="2"></rect><line x1="1" y1="10" x2="23" y2="10"></line></svg>
-                        Card Payment
-                    </button>
-                </div>
-
-                <div class="payment-methods-content">
-                    <div id="upi-method" class="payment-panel active">
-                        <div class="upi-qr-container">
-                            <!-- Dynamic vs Static QR Selector Toggle -->
-                            <div class="qr-toggle-container">
-                                <button type="button" id="qr-toggle-dynamic" class="qr-toggle-btn active">Dynamic QR</button>
-                                <button type="button" id="qr-toggle-static" class="qr-toggle-btn">Static QR</button>
-                            </div>
-                            
-                            <p id="upi-instructions" class="qr-desc">Scan QR to pay exact fee <strong class="config-fee-text">99/-</strong>. Payee & amount pre-filled.</p>
-                            
-                            <a id="upi-deeplink" href="upi://pay?pa=94664771641@axl&pn=GAJENDER%20SINGH&am=99&cu=INR&tn=NLP%20Seminar" style="text-decoration: none; display: block; margin-bottom: 5px;">
-                                <div class="qr-code-placeholder" style="margin-bottom: 10px;">
-                                    <!-- Dynamic QR Canvas -->
-                                    <canvas id="upi-qr-canvas" class="upi-qr-image" style="background:#fff; display: block; width: 100%; height: 100%;"></canvas>
-                                    <!-- Static QR Image -->
-                                    <img id="upi-qr-static-img" src="assets/phonepe_qr.jpg" alt="PhonePe QR Code" class="upi-qr-image" style="display: none; width: 100%; height: 100%; object-fit: contain;">
-                                    <div class="qr-scanner-line"></div>
-                                </div>
-                            </a>
-                            
-                            <!-- Mobile Direct Link Button -->
-                            <a id="upi-mobile-pay-btn" href="upi://pay?pa=94664771641@axl&pn=GAJENDER%20SINGH&am=99&cu=INR&tn=NLP%20Seminar" class="upi-mobile-btn" target="_blank">
-                                📱 PAY DIRECTLY VIA UPI APP
-                            </a>
-
-                            <div class="payment-timer" style="margin-top: 5px;">QR Code expires in: <span id="timer-val">05:00</span></div>
-                            
-                            <!-- Secure UTR Form -->
-                            <form id="upi-payment-form" class="checkout-form" style="width: 100%; gap: 10px;">
-                                <div class="form-group" style="text-align: left;">
-                                    <label for="user-utr" style="font-size: 0.82rem;">Enter 12-digit UPI UTR / Ref No. after payment</label>
-                                    <input type="text" id="user-utr" required placeholder="e.g. 612345678901" maxlength="12" pattern="\d{12}" title="Please enter exactly 12 digits.">
-                                </div>
-                                <div id="upi-error-msg" class="error-feedback-text" style="color: #ef4444; font-size: 0.85rem; font-weight: 600; min-height: 18px; text-align: center; margin-top: 5px;"></div>
-                                <button type="submit" class="submit-btn" style="margin-top: 5px;">VERIFY TRANSACTION & INVITE</button>
-                            </form>
-                        </div>
-                    </div>
-
-                    <!-- Card Method -->
-                    <div id="card-method" class="payment-panel">
-                        <form id="card-form" class="checkout-form">
-                            <div class="form-group">
-                                <label for="card-num">Card Number</label>
-                                <input type="text" id="card-num" required placeholder="4111 2222 3333 4444" maxlength="19">
-                            </div>
-                            <div class="form-row">
-                                <div class="form-group">
-                                    <label for="card-expiry">Expiry Date</label>
-                                    <input type="text" id="card-expiry" required placeholder="MM/YY" maxlength="5">
-                                </div>
-                                <div class="form-group">
-                                    <label for="card-cvv">CVV</label>
-                                    <input type="password" id="card-cvv" required placeholder="123" maxlength="4">
-                                </div>
-                            </div>
-                            <button type="submit" class="submit-btn">PAY NOW</button>
-                        </form>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Step 3: Loading / Processing -->
-            <div id="step-processing" class="checkout-step">
-                <div class="processing-container">
-                    <div class="spinner">
-                        <div class="double-bounce1"></div>
-                        <div class="double-bounce2"></div>
-                    </div>
-                    <h3>Processing Security Payment...</h3>
-                    <p>Please do not close this window or click back.</p>
-                </div>
-            </div>
-
-            <!-- Step 4: Success Redirection to WhatsApp -->
-            <div id="step-success" class="checkout-step">
-                <div class="success-container">
-                    <div class="checkmark-circle">
-                        <div class="background"></div>
-                        <div class="checkmark draw"></div>
-                    </div>
-                    <h2>Payment Successful!</h2>
-                    <p>You have registered for the <strong>NLP Life Coach Seminar</strong> with <strong>Dr GSR</strong>.</p>
-                    <p class="whatsapp-prompt">To secure your seat materials, join the official client community below:</p>
-                    
-                    <a href="https://chat.whatsapp.com/Ky6tGrN9THs6xEndeuNrqy" id="whatsapp-join-btn" class="whatsapp-btn" target="_blank" rel="noopener noreferrer">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-whatsapp" viewBox="0 0 16 16">
-                            <path d="M13.601 2.326A7.854 7.854 0 0 0 7.994 0C3.627 0 .068 3.558.064 7.926c0 1.399.366 2.76 1.057 3.965L0 16l4.204-1.102a7.933 7.933 0 0 0 3.79.977h.004c4.368 0 7.926-3.559 7.93-7.934a7.89 7.89 0 0 0-2.327-5.612v-.002zM7.994 14.52a6.573 6.573 0 0 1-3.356-.92l-.24-.144-2.494.654.666-2.433-.156-.251a6.56 6.56 0 0 1-1.007-3.505c0-3.626 2.957-6.584 6.591-6.584a6.56 6.56 0 0 1 4.66 1.931 6.557 6.557 0 0 1 1.928 4.66c-.004 3.639-2.961 6.592-6.592 6.592zm3.69-3.146c-.183-.09-.183-.3-.365-.392a1.6 1.6 0 0 0-.083-.05c-.092-.047-.183-.092-.365-.183-.183-.09-.365-.183-.55-.275-.183-.09-.365.09-.456.183l-.365.365c-.09.09-.183.09-.365 0-.365-.183-.73-.365-1.1-.642-.275-.275-.548-.548-.73-.914-.09-.183-.09-.365.09-.456.09-.09.183-.183.275-.275.09-.09.183-.183.275-.275.09-.09.09-.183.09-.365a2.53 2.53 0 0 0-.183-.73c-.09-.183-.183-.365-.275-.456-.092-.09-.183-.183-.275-.183s-.275.09-.365.183c-.183.183-.365.456-.365.73 0 .365.09.73.275 1.1.275.55.64 1.1 1.1 1.56.55.55 1.1.91 1.65 1.28.275.183.55.275.823.365.275.09.55.09.73 0 .183-.09.365-.275.456-.55.09-.275.09-.55.09-.642 0-.09-.09-.183-.183-.275z"/>
-                        </svg>
-                        Join Official WhatsApp Group
-                    </a>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Configuration Modal (For Client Customization) -->
-    <div id="settings-modal" class="modal-overlay">
-        <div class="settings-card" style="max-width: 580px;">
-            <button class="modal-close" id="close-settings">&times;</button>
-            
-            <!-- Tab headers for Settings and Logs -->
-            <div class="modal-tabs" style="display: flex; gap: 10px; margin-bottom: 20px; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 10px;">
-                <button type="button" id="admin-tab-settings" class="pay-tab active" style="flex: 1; padding: 8px;">Settings</button>
-                <button type="button" id="admin-tab-logs" class="pay-tab" style="flex: 1; padding: 8px;">Transaction Logs</button>
-            </div>
-            
-            <!-- Configuration Settings Form -->
-            <div id="admin-settings-tab" class="payment-panel active">
-                <div class="modal-header" style="margin-bottom: 20px;">
-                    <h2>Settings Configuration</h2>
-                    <p>Modify date/pricing/WhatsApp details. Changes save on the server.</p>
-                </div>
-                <form id="settings-form" class="checkout-form">
-                    <div class="form-group">
-                        <label for="config-upi">Merchant UPI ID (VPA)</label>
-                        <input type="text" id="config-upi" required placeholder="e.g. 94664771641@axl">
-                    </div>
-                    <div class="form-group">
-                        <label for="config-payee-name">Payee Account Name</label>
-                        <input type="text" id="config-payee-name" required placeholder="e.g. GAJENDER SINGH">
-                    </div>
-                    <div class="form-group">
-                        <label for="config-whatsapp">WhatsApp Group Invite Link</label>
-                        <input type="url" id="config-whatsapp" required placeholder="https://chat.whatsapp.com/...">
-                    </div>
-                    <div class="form-row">
-                        <div class="form-group">
-                            <label for="config-fee">Registration Fee</label>
-                            <input type="text" id="config-fee" required placeholder="99/-">
-                        </div>
-                        <div class="form-group">
-                            <label for="config-date">Event Date</label>
-                            <input type="text" id="config-date" required placeholder="12 July 2026">
-                        </div>
-                    </div>
-                    <div class="form-row">
-                        <div class="form-group">
-                            <label for="config-time">Event Time</label>
-                            <input type="text" id="config-time" required placeholder="9:00 PM">
-                        </div>
-                        <div class="form-group">
-                            <label for="config-day">Event Day</label>
-                            <input type="text" id="config-day" required placeholder="SUNDAY">
-                        </div>
-                    </div>
-                    <div class="form-row">
-                        <div class="form-group">
-                            <label for="config-qr-mode">Default QR Mode</label>
-                            <select id="config-qr-mode" style="background: rgba(3, 8, 22, 0.6); border: 1px solid rgba(255, 255, 255, 0.15); border-radius: 8px; padding: 12px; color: #fff; font-size: 1rem; outline: none; transition: all 0.3s ease;">
-                                <option value="dynamic">Dynamic QR (Auto-filled)</option>
-                                <option value="static">Static QR (Uploaded Template)</option>
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <label for="config-static-path">Static QR Image Path</label>
-                            <input type="text" id="config-static-path" placeholder="assets/phonepe_qr.jpg">
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label for="config-admin-password">Change Admin Password</label>
-                        <input type="password" id="config-admin-password" placeholder="Leave blank to keep current password">
-                    </div>
-                    <div class="settings-actions" style="display: flex; gap: 15px; margin-top: 10px;">
-                        <button type="button" id="reset-settings-btn" class="settings-reset-btn" style="flex: 1; padding: 12px; background: rgba(239, 68, 68, 0.15); border: 1px solid #ef4444; color: #ef4444; border-radius: 8px; cursor: pointer; font-weight: 600; font-size: 0.95rem;">Reset to Default</button>
-                        <button type="submit" class="settings-save-btn" style="flex: 1; padding: 12px; background: var(--gold-gradient); border: none; color: #030816; border-radius: 8px; cursor: pointer; font-weight: 800; text-align: center; font-size: 0.95rem;">Save Changes</button>
-                    </div>
-                </form>
-            </div>
-            
-            <!-- Transaction Logs Tab Panel -->
-            <div id="admin-logs-tab" class="payment-panel">
-                <div class="modal-header" style="margin-bottom: 20px;">
-                    <h2>Transaction Logs</h2>
-                    <p>Unlock with the admin password to view UTR logs.</p>
-                </div>
-                
-                <form id="logs-auth-form" class="checkout-form" style="margin-bottom: 20px;">
-                    <div class="form-group">
-                        <label for="logs-password">Admin Password</label>
-                        <input type="password" id="logs-password" required placeholder="Enter admin password to view UTR logs">
-                    </div>
-                    <button type="submit" class="submit-btn" style="margin-top: 5px;">UNLOCK LOGS</button>
-                    <div id="logs-auth-error" style="color: #ef4444; font-size: 0.85rem; font-weight: 600; text-align: center; margin-top: 5px;"></div>
-                </form>
-
-                <div id="logs-table-container" style="display: none; max-height: 280px; overflow-y: auto; border: 1px solid rgba(255,255,255,0.1); border-radius: 8px;">
-                    <table style="width: 100%; border-collapse: collapse; font-size: 0.85rem; text-align: left;">
-                        <thead style="background: rgba(212, 175, 55, 0.1); color: var(--text-gold); font-weight: 600;">
-                            <tr>
-                                <th style="padding: 10px; border-bottom: 1px solid rgba(255,255,255,0.15);">Name</th>
-                                <th style="padding: 10px; border-bottom: 1px solid rgba(255,255,255,0.15);">Phone</th>
-                                <th style="padding: 10px; border-bottom: 1px solid rgba(255,255,255,0.15);">UTR Code</th>
-                                <th style="padding: 10px; border-bottom: 1px solid rgba(255,255,255,0.15);">Date</th>
-                            </tr>
-                        </thead>
-                        <tbody id="logs-table-body">
-                            <!-- Populated dynamically via JS -->
-                        </tbody>
-                    </table>
-                </div>
+                <a href="https://chat.whatsapp.com/Ky6tGrN9THs6xEndeuNrqy" id="whatsapp-join-btn" class="whatsapp-btn" target="_blank" rel="noopener noreferrer">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-whatsapp" viewBox="0 0 16 16" style="margin-right: 8px; vertical-align: middle;">
+                        <path d="M13.601 2.326A7.854 7.854 0 0 0 7.994 0C3.627 0 .068 3.558.064 7.926c0 1.399.366 2.76 1.057 3.965L0 16l4.204-1.102a7.933 7.933 0 0 0 3.79.977h.004c4.368 0 7.926-3.559 7.93-7.934a7.89 7.89 0 0 0-2.327-5.612v-.002zM7.994 14.52a6.573 6.573 0 0 1-3.356-.92l-.24-.144-2.494.654.666-2.433-.156-.251a6.56 6.56 0 0 1-1.007-3.505c0-3.626 2.957-6.584 6.591-6.584a6.56 6.56 0 0 1 4.66 1.931 6.557 6.557 0 0 1 1.928 4.66c-.004 3.639-2.961 6.592-6.592 6.592zm3.69-3.146c-.183-.09-.183-.3-.365-.392a1.6 1.6 0 0 0-.083-.05c-.092-.047-.183-.092-.365-.183-.183-.09-.365-.183-.55-.275-.183-.09-.365.09-.456.183l-.365.365c-.09.09-.183.09-.365 0-.365-.183-.73-.365-1.1-.642-.275-.275-.548-.548-.73-.914-.09-.183-.09-.365.09-.456.09-.09.183-.183.275-.275.09-.09.183-.183.275-.275.09-.09.09-.183.09-.365a2.53 2.53 0 0 0-.183-.73c-.09-.183-.183-.365-.275-.456-.092-.09-.183-.183-.275-.183s-.275.09-.365.183c-.183.183-.365.456-.365.73 0 .365.09.73.275 1.1.275.55.64 1.1 1.1 1.56.55.55 1.1.91 1.65 1.28.275.183.55.275.823.365.275.09.55.09.73 0 .183-.09.365-.275.456-.55.09-.275.09-.55.09-.642 0-.09-.09-.183-.183-.275z"/>
+                    </svg>
+                    Join Official WhatsApp Group
+                </a>
             </div>
         </div>
     </div>
 
     <!-- JS Logic -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcode/1.5.0/qrcode.min.js"></script>
     <script src="app.js" defer></script>
 </body>
 </html>
